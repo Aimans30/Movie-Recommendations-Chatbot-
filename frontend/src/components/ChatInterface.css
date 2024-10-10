@@ -1,0 +1,196 @@
+/* General Message Styles */
+.message-container {
+  padding: 12px;
+  margin-bottom: 10px;
+  border-radius: 20px;
+  max-width: 75%;
+  font-size: 16px;
+  line-height: 1.4;
+  position: relative;
+}
+
+.message-sender {
+  font-weight: bold;
+  margin-bottom: 5px;
+  font-size: 14px;
+}
+
+.message-user {
+  background-color: #34C759; /* iOS green for user messages */
+  color: white;
+  align-self: flex-end;
+  border-radius: 20px 20px 0 20px; /* Rounded corners like iOS */
+}
+
+.message-bot {
+  background-color: #007AFF; /* iOS blue for bot messages */
+  color: white;
+  align-self: flex-start;
+  border-radius: 20px 20px 20px 0; /* Rounded corners like iOS */
+}
+
+.message-title {
+  font-weight: normal;
+  white-space: pre-wrap; /* Keep line breaks */
+}
+
+.scrollable-messages {
+  max-height: 60vh;
+  overflow-y: auto;
+  padding-right: 10px;
+}
+
+.scrollable-messages::-webkit-scrollbar {
+  width: 5px;
+}
+
+.scrollable-messages::-webkit-scrollbar-thumb {
+  background-color: #b0b0b0;
+  border-radius: 10px;
+}
+
+.loading-dots {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  margin-left: 10px;
+}
+
+.loading-dots span {
+  width: 8px;
+  height: 8px;
+  margin-right: 5px;
+  background-color: #007AFF;
+  border-radius: 50%;
+  animation: bounce 1.2s infinite;
+}
+
+@keyframes bounce {
+  0%, 100% {
+      transform: translateY(0);
+  }
+  50% {
+      transform: translateY(-8px);
+  }
+}
+
+/* Feedback Section */
+.feedback-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 10px;
+  padding: 10px;
+  background-color: #f5f5f5;
+  border-radius: 10px;
+}
+
+.feedback-container .MuiIconButton-root {
+  margin: 0 10px;
+}
+
+.feedback-container .MuiButton-root {
+  padding: 8px;
+  font-size: 16px;
+}
+
+.rating-container {
+  margin-top: 20px;
+  text-align: center;
+}
+
+.rating-bubbles {
+  display: flex;
+  justify-content: space-evenly;
+  margin-bottom: 10px;
+}
+
+.rating-bubble {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  font-size: 16px;
+  font-weight: bold;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #e0e0e0;
+  color: black;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.rating-bubble:hover {
+  background-color: #007AFF;
+  color: white;
+  cursor: pointer;
+}
+
+.rating-bubble.selected {
+  background-color: #007AFF;
+  color: white;
+}
+
+/* Style for Selected Rating */
+.MuiButton-contained {
+  background-color: #007AFF !important;
+  color: white;
+}
+
+.feedback-textbox {
+  width: 100%;
+  margin-top: 10px;
+  font-size: 16px;
+}
+
+.rating-container {
+  margin-top: 10px;
+}
+
+.rating-bubbles {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.rating-bubble {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: #e0e0e0;
+  font-size: 16px;
+  font-weight: bold;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+}
+
+.rating-bubble.selected {
+  background-color: #007AFF;
+  color: white;
+}
+
+.rating-bubble {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  font-size: 16px;
+  font-weight: bold;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: transparent; /* Set default background color */
+  transition: background-color 0.3s; /* Smooth transition */
+}
+
+.rating-bubble:hover {
+  background-color: lightblue; /* Change to light blue on hover */
+  color: white; /* Change text color to white when hovered */
+  cursor: pointer;
+}
+
+/* Style for Selected Rating */
+.MuiButton-contained {
+  background-color: #007AFF !important;
+  color: white;
+}
