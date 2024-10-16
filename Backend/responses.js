@@ -14,11 +14,8 @@ const generateResponse = async (query, axios) => {
                 `https://api.themoviedb.org/3/trending/movie/day?api_key=${process.env.TMDB_API_KEY}`
             );
 
-            // Log the entire movie data for debugging
-            console.log("Movie data fetched successfully:", movieData.data);
-
             const movies = movieData.data.results.slice(0, 3).map(movie => {
-                return `🎬 ${movie.title} - Rating: ${movie.vote_average}/10`; // Removed genres
+                return `🎬 ${movie.title} - Rating: ${movie.vote_average}/10`;
             });
 
             responseText = `Here are the trending movies:\n${movies.join('\n')}`;
@@ -33,9 +30,11 @@ const generateResponse = async (query, axios) => {
                 `https://api.rawg.io/api/games?key=${process.env.RAWG_API_KEY}&page_size=3`
             );
             console.log("Game data fetched successfully:", gameData.data);
+
             const games = gameData.data.results.map(game => (
-                `🎮 ${game.name} - Rating: ${(game.rating).toFixed(2)}/5` // Removed genres for games
+                `🎮 ${game.name} - Rating: ${(game.rating).toFixed(2)}/5`
             )).join('\n');
+
             responseText = `Here are the trending games:\n${games}`;
         } catch (error) {
             console.error("Error fetching games:", error.response ? error.response.data : error.message);

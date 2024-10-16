@@ -1,0 +1,128 @@
+/* General Button Styles */
+button {
+    cursor: pointer;
+}
+
+/* Signup Button Styles */
+.signup-container {
+    position: relative;
+}
+
+.signup-button {
+    position: fixed;
+    top: 10px;
+    left: 10px;
+    padding: 10px 15px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    z-index: 1000;
+}
+
+.signup-button:hover {
+    background-color: #0056b3;
+}
+
+/* Login Button Styles */
+.login-button {
+    position: fixed;
+    top: 10px;
+    left: 110px; /* Positioned next to signup button */
+    padding: 10px 15px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    z-index: 1000;
+}
+
+.login-button:hover {
+    background-color: #0056b3;
+}
+
+/* Login Popup Styles */
+.login-popup {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: white;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    padding: 30px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    width: 400px;
+    max-width: 90%;
+    z-index: 1000;
+}
+
+.login-popup h2 {
+    margin-bottom: 20px;
+}
+
+.login-popup input {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.login-popup .submit-button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 10px;
+    cursor: pointer;
+    width: 100%;
+}
+
+.login-popup .submit-button:hover {
+    background-color: #0056b3;
+}
+
+/* Welcome Message and Logout Button */
+.welcome-message {
+    position: fixed;
+    top: 10px;
+    left: 110px;
+    display: flex;
+    align-items: center;
+}
+
+.welcome-message span {
+    margin-right: 10px;
+    font-weight: bold;
+    color: #007bff;
+}
+
+.logout-button {
+    padding: 8px 12px;
+    background-color: #dc3545;
+    color: white;
+    border: none;
+    border-radius: 5px;
+}
+
+.logout-button:hover {
+    background-color: #c82333;
+}
+
+/* Close Modal Button Styles */
+.close-modal {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: transparent;
+    border: none;
+    font-size: 24px;
+    color: #333;
+    cursor: pointer;
+    z-index: 1001;
+}
+
+.close-modal:hover {
+    color: #dc3545;
+}
