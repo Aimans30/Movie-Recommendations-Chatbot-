@@ -32,19 +32,17 @@ const Login = () => {
         }
       );
 
-      const { token, username } = response.data;
+      const { token, username } = response.data; // Ensure username is included in the response
       localStorage.setItem('token', token);
-      localStorage.setItem('username', username);
+      localStorage.setItem('username', username); // Store username in local storage
 
       setUsername(username);
       setLoggedIn(true);
       setMessage('You have been successfully logged in!');
       setShowSuccessModal(true);
 
-      // Close login modal after a successful login
-      setShowLogin(false);
+      setShowLogin(false); // Close login modal
 
-      // Automatically hide the success message after 2 seconds
       setTimeout(() => {
         setShowSuccessModal(false);
         setMessage('');
@@ -77,37 +75,40 @@ const Login = () => {
           </button>
         </div>
       ) : (
-        <button className="login-button" onClick={() => setShowLogin(true)}>
-          Login
-        </button>
-      )}
-
-      {showLogin && !loggedIn && (
-        <div className="login-popup">
-          <button className="close-modal" onClick={() => setShowLogin(false)}>
-            &times;
-          </button>
-          <h2>Login</h2>
-          <form onSubmit={handleSubmit}>
-            <input
-              type="email"
-              placeholder="Email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
-            />
-            <input
-              type="password"
-              placeholder="Password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-            />
-            <button type="submit" className="submit-button">
+        <>
+          {showLogin && (
+            <div className="login-popup">
+              <button className="close-modal" onClick={() => setShowLogin(false)}>
+                &times;
+              </button>
+              <h2>Login</h2>
+              <form onSubmit={handleSubmit}>
+                <input
+                  type="email"
+                  placeholder="Email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  required
+                />
+                <input
+                  type="password"
+                  placeholder="Password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  required
+                />
+                <button type="submit" className="submit-button">
+                  Login
+                </button>
+              </form>
+            </div>
+          )}
+          {!showLogin && !loggedIn && (
+            <button className="login-button" onClick={() => setShowLogin(true)}>
               Login
             </button>
-          </form>
-        </div>
+          )}
+        </>
       )}
 
       {showLogoutModal && (

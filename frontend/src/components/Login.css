@@ -8,35 +8,29 @@ button {
     position: relative;
 }
 
-.signup-button {
-    position: fixed;
-    top: 10px;
-    left: 10px;
-    padding: 10px 15px;
-    background-color: #007bff;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    z-index: 1000;
-}
-
-.signup-button:hover {
-    background-color: #0056b3;
-}
-
-/* Login Button Styles */
+.signup-button,
 .login-button {
     position: fixed;
-    top: 10px;
-    left: 110px; /* Positioned next to signup button */
+    top: 20px;
     padding: 10px 15px;
-    background-color: #007bff;
+    background-image: radial-gradient(100% 100% at 100% 0, #5adaff 0, #5468ff 100%);
     color: white;
     border: none;
-    border-radius: 5px;
+    border-radius: 6px;
     z-index: 1000;
+    transition: background-color .15s;
+    margin-left: 30px;
 }
 
+.signup-button {
+    left: 10px;
+}
+
+.login-button {
+    left: 110px; /* Positioned next to signup button */
+}
+
+.signup-button:hover,
 .login-button:hover {
     background-color: #0056b3;
 }
@@ -70,7 +64,7 @@ button {
 }
 
 .login-popup .submit-button {
-    background-color: #007bff;
+    background-image: radial-gradient(100% 100% at 100% 0, #5adaff 0, #5468ff 100%);
     color: white;
     border: none;
     border-radius: 5px;
@@ -110,7 +104,7 @@ button {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    background-color: 007bff; /* Logout modal color */
+    background-color: #007bff; /* Logout modal color */
     border: 1px solid #ccc;
     border-radius: 8px;
     padding: 30px;
@@ -137,7 +131,9 @@ button {
 .welcome-message span {
     margin-right: 10px;
     font-weight: bold;
-    color: #007bff;
+    color: whitesmoke;
+    margin-left: 150px;
+    margin-top: 16px;
 }
 
 .logout-button {
@@ -146,6 +142,7 @@ button {
     color: white;
     border: none;
     border-radius: 5px;
+    margin-top: 10px;
 }
 
 .logout-button:hover {

@@ -1,18 +1,28 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Button, TextField, Container, Typography, Paper, Box, IconButton } from '@mui/material';
 import ThumbUpIcon from '@mui/icons-material/ThumbUp';
 import ThumbDownIcon from '@mui/icons-material/ThumbDown';
-import axios from 'axios'; // Imported axios
+import axios from 'axios';
 import './ChatInterface.css';
 
 const ChatInterface = () => {
+  const [username, setUsername] = useState('');
   const [query, setQuery] = useState('');
   const [messages, setMessages] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [feedbackIndex, setFeedbackIndex] = useState(null); // Track feedback for which message
-  const [rating, setRating] = useState(null); // Track the rating value
-  const [feedbackText, setFeedbackText] = useState(''); // Track feedback text
-  const [thankYouMessage, setThankYouMessage] = useState(''); // Track the thank you message
+  const [feedbackIndex, setFeedbackIndex] = useState(null);
+  const [rating, setRating] = useState(null);
+  const [feedbackText, setFeedbackText] = useState('');
+  const [thankYouMessage, setThankYouMessage] = useState('');
+
+  useEffect(() => {
+    const storedUsername = localStorage.getItem('username');
+    if (storedUsername) {
+      setUsername(storedUsername);
+    } else {
+      setUsername('You'); // Fallback to 'You' if no username is stored
+    }
+  }, []);
 
   const handleSendMessage = async () => {
     if (!query.trim()) return;
@@ -25,38 +35,37 @@ const ChatInterface = () => {
     try {
       const res = await new Promise((resolve) =>
         setTimeout(async () => {
-          const apiRes = await axios.post('http://localhost:5000/api/chatbot/query', { query }); // API call
+          const apiRes = await axios.post('http://localhost:5000/api/chatbot/query', { query });
           resolve(apiRes);
-        }, 2000) // Simulate delay for loading animation
+        }, 2000)
       );
 
       const botResponse = res.data.response;
-      setMessages([...newMessages, { sender: 'Bot', text: botResponse }]);
+      setMessages([...newMessages, { sender: 'Recommendo', text: botResponse }]);
     } catch (error) {
-      setMessages([...newMessages, { sender: 'Bot', text: 'Sorry, something went wrong.' }]);
+      setMessages([...newMessages, { sender: 'Recommendo', text: 'Sorry, something went wrong.' }]);
     } finally {
       setLoading(false);
     }
   };
 
   const handleFeedback = (messageIndex) => {
-    setFeedbackIndex(messageIndex); // Open the feedback section for this specific message
+    setFeedbackIndex(messageIndex);
   };
 
   const handleRatingClick = (value) => {
-    setRating(value); // Set the rating when clicked
+    setRating(value);
   };
 
   const handleSubmitFeedback = () => {
-    console.log({ rating, feedbackText }); // Handle submission here
-    setThankYouMessage('Thank you for your feedback!'); // Show thank you message
+    console.log({ rating, feedbackText });
+    setThankYouMessage('Thank you for your feedback!');
 
     // Reset feedback state
     setFeedbackIndex(null);
     setRating(null);
     setFeedbackText('');
 
-    // Hide thank you message after 5 seconds
     setTimeout(() => {
       setThankYouMessage('');
     }, 5000);
@@ -64,23 +73,18 @@ const ChatInterface = () => {
 
   return (
     <Container maxWidth="sm" style={{ marginTop: '20px', height: '80vh', display: 'flex', flexDirection: 'column' }}>
-      <Typography variant="h4" gutterBottom align="center">
-        Chatbot
-      </Typography>
-
-      <Paper elevation={3} style={{ flex: 1, padding: '15px', marginBottom: '20px', overflowY: 'auto' }}>
+      <Paper elevation={3} style={{ flex: 1, padding: '15px', overflowY: 'hidden' }}>
         <div className="scrollable-messages">
           {messages.map((message, index) => (
             <Box key={index} className={`message-container ${message.sender === 'User' ? 'message-user' : 'message-bot'}`}>
               <Typography className="message-sender">
-                {message.sender === 'User' ? 'You' : 'Bot'}
+                {message.sender === 'User' ? username : 'Recommendo'}
               </Typography>
               <Typography className="message-title">
                 {message.text}
               </Typography>
 
-              {/* Feedback section only for Bot messages */}
-              {message.sender === 'Bot' && (
+              {message.sender === 'Recommendo' && (
                 <>
                   <div className="feedback-container">
                     <IconButton onClick={() => handleFeedback(index)} aria-label="thumbs up">
@@ -91,7 +95,6 @@ const ChatInterface = () => {
                     </IconButton>
                   </div>
 
-                  {/* Show feedback box with rating and text input if feedback for this message is requested */}
                   {feedbackIndex === index && (
                     <div className="rating-container">
                       <div className="rating-bubbles">
@@ -113,12 +116,17 @@ const ChatInterface = () => {
                         onChange={(e) => setFeedbackText(e.target.value)}
                         multiline
                         rows={2}
+                        InputProps={{
+                          style: {
+                            borderRadius: '20px', // Rounded edges for the feedback textbox
+                          },
+                        }}
                       />
                       <Button
                         variant="contained"
                         color="primary"
                         style={{ marginTop: '10px' }}
-                        onClick={handleSubmitFeedback} // Call the submit feedback function
+                        onClick={handleSubmitFeedback}
                       >
                         Submit Feedback
                       </Button>
@@ -138,7 +146,6 @@ const ChatInterface = () => {
           )}
         </div>
 
-        {/* Display thank you message */}
         {thankYouMessage && (
           <Typography variant="body1" align="center" style={{ marginTop: '20px', color: 'green' }}>
             {thankYouMessage}
@@ -153,6 +160,11 @@ const ChatInterface = () => {
         onChange={(e) => setQuery(e.target.value)}
         variant="outlined"
         margin="normal"
+        InputProps={{
+          style: {
+            borderRadius: '20px', // Rounded edges for the input textbox
+          },
+        }}
         onKeyPress={(e) => {
           if (e.key === 'Enter') handleSendMessage();
         }}

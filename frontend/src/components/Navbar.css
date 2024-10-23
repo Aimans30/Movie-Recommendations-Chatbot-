@@ -1,0 +1,49 @@
+body {
+    margin: 0; /* Ensure no default margin on the body */
+    padding: 0; /* Ensure no default padding on the body */
+}
+
+.navbar {
+    background-color: #3f51b5; /* Change to your desired color */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 80px;
+    padding: 0 20px; /* Add padding on the sides for spacing */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3); /* Optional: add shadow for depth */
+}
+
+.auth-buttons {
+    display: flex;
+    align-items: center;
+}
+
+.welcome-message {
+    color: #fff;
+    margin-right: 10px;
+}
+
+.logout-button {
+    background-color: #f44336;
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    cursor: pointer;
+    margin-left: 10px;
+}
+
+.navbar-title-container {
+    flex-grow: 1; /* Make sure the title grows to fill space */
+    text-align: center; /* Center the text */
+}
+
+.navbar-title {
+    color: white; /* Change text color to white */
+    font-size: 40px; /* Adjust font size */
+    font-weight: bold; /* Make the text bold */
+    text-transform: uppercase; /* Optional: make the text uppercase */
+    letter-spacing: 2px; /* Add some space between letters */
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5); /* Optional: add a shadow for depth */
+    padding-top: 15px; /* Adjust the padding to bring the title down */
+    line-height: 1.2; /* Adjust line height to control vertical spacing */
+}

@@ -35,18 +35,40 @@
 }
 
 .scrollable-messages {
-  max-height: 60vh;
-  overflow-y: auto;
+  max-height: 60vh; /* Limit height of the messages area */
+  overflow-y: auto; /* Allow vertical scrolling */
   padding-right: 10px;
 }
 
-.scrollable-messages::-webkit-scrollbar {
-  width: 5px;
+/* Custom Scrollbar Styles */
+::-webkit-scrollbar {
+  width: 20px; /* Width of the scrollbar */
 }
 
-.scrollable-messages::-webkit-scrollbar-thumb {
-  background-color: #b0b0b0;
-  border-radius: 10px;
+::-webkit-scrollbar-track {
+  background-color: transparent; /* Transparent background for the track */
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #d6dee1; /* Color of the scrollbar thumb */
+  border-radius: 20px; /* Rounded corners for the thumb */
+  border: 6px solid transparent; /* Space around the thumb */
+  background-clip: content-box; /* Ensures the border does not affect the thumb color */
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: #a8bbbf; /* Color on hover */
+}
+
+/* Hide scrollbar for Firefox */
+.scrollable-messages {
+  scrollbar-width: thin; /* Thin scrollbar for Firefox */
+  scrollbar-color: #d6dee1 transparent; /* Thumb color and track color */
+}
+
+/* Hide scrollbar for IE and Edge */
+.scrollable-messages {
+  -ms-overflow-style: auto; /* Internet Explorer and Edge */
 }
 
 .loading-dots {
@@ -126,71 +148,6 @@
 }
 
 .rating-bubble.selected {
-  background-color: #007AFF;
-  color: white;
-}
-
-/* Style for Selected Rating */
-.MuiButton-contained {
-  background-color: #007AFF !important;
-  color: white;
-}
-
-.feedback-textbox {
-  width: 100%;
-  margin-top: 10px;
-  font-size: 16px;
-}
-
-.rating-container {
-  margin-top: 10px;
-}
-
-.rating-bubbles {
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 10px;
-}
-
-.rating-bubble {
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  background-color: #e0e0e0;
-  font-size: 16px;
-  font-weight: bold;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  cursor: pointer;
-}
-
-.rating-bubble.selected {
-  background-color: #007AFF;
-  color: white;
-}
-
-.rating-bubble {
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  font-size: 16px;
-  font-weight: bold;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background-color: transparent; /* Set default background color */
-  transition: background-color 0.3s; /* Smooth transition */
-}
-
-.rating-bubble:hover {
-  background-color: lightblue; /* Change to light blue on hover */
-  color: white; /* Change text color to white when hovered */
-  cursor: pointer;
-}
-
-/* Style for Selected Rating */
-.MuiButton-contained {
-  background-color: #007AFF !important;
+  background-color: #34C759;
   color: white;
 }
