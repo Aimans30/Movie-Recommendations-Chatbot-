@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Button, TextField, Container, Typography, Paper, Box, IconButton } from '@mui/material';
 import ThumbUpIcon from '@mui/icons-material/ThumbUp';
 import ThumbDownIcon from '@mui/icons-material/ThumbDown';
@@ -14,6 +14,7 @@ const ChatInterface = () => {
   const [rating, setRating] = useState(null);
   const [feedbackText, setFeedbackText] = useState('');
   const [thankYouMessage, setThankYouMessage] = useState('');
+  const chatContainerRef = useRef(null); // Add a reference for the chat container
 
   useEffect(() => {
     const storedUsername = localStorage.getItem('username');
@@ -23,6 +24,13 @@ const ChatInterface = () => {
       setUsername('You'); // Fallback to 'You' if no username is stored
     }
   }, []);
+
+  // Auto-scroll to the bottom when messages change
+  useEffect(() => {
+    if (chatContainerRef.current) {
+      chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
+    }
+  }, [messages]);
 
   const handleSendMessage = async () => {
     if (!query.trim()) return;
@@ -74,7 +82,7 @@ const ChatInterface = () => {
   return (
     <Container maxWidth="sm" style={{ marginTop: '20px', height: '80vh', display: 'flex', flexDirection: 'column' }}>
       <Paper elevation={3} style={{ flex: 1, padding: '15px', overflowY: 'hidden' }}>
-        <div className="scrollable-messages">
+        <div className="scrollable-messages" ref={chatContainerRef}> {/* Add the ref here */}
           {messages.map((message, index) => (
             <Box key={index} className={`message-container ${message.sender === 'User' ? 'message-user' : 'message-bot'}`}>
               <Typography className="message-sender">

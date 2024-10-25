@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import './Signup.css';
 
-const SignUp = ({ onSignUp }) => {
+const SignUp = () => {
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -18,15 +18,23 @@ const SignUp = ({ onSignUp }) => {
         email,
         password,
       });
-      setMessage(response.data.message);
-      setShowSuccess(true);
-      setUsername('');
-      setEmail('');
-      setPassword('');
-      onSignUp(); // Notify the parent of successful sign-up
+
+      if (response.status === 201) {
+        setMessage('You have been registered successfully!');
+        setShowSuccess(true);
+        setUsername('');
+        setEmail('');
+        setPassword('');
+      }
     } catch (error) {
       console.error("Error during sign up:", error.response ? error.response.data : error.message);
-      setMessage('Sign up failed. Please try again.');
+      if (error.response && error.response.status === 400) {
+        // Provide a more specific error message based on response data
+        const errorMessage = error.response.data.message || 'Invalid input or email already registered.';
+        setMessage(errorMessage);
+      } else {
+        setMessage('Sign up failed. Server error, please try again later.');
+      }
     }
   };
 
@@ -71,12 +79,12 @@ const SignUp = ({ onSignUp }) => {
             />
             <button type="submit" className="submit-button">Submit</button>
           </form>
-          {message && <p>{message}</p>}
+          {message && <p className="error-message">{message}</p>}
         </div>
       )}
       {showSuccess && (
         <div className="success-popup">
-          <h2>You have been registered successfully!</h2>
+          <h2>{message}</h2>
           <button onClick={handleCloseSuccess}>Close</button>
         </div>
       )}

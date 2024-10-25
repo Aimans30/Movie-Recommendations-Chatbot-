@@ -49,7 +49,15 @@ const Login = () => {
       }, 2000);
     } catch (error) {
       console.error('Error during login:', error);
-      setMessage('Login failed. Please try again.');
+      if (error.response) {
+        if (error.response.status === 401) {
+          setMessage('Invalid email or password.');
+        } else {
+          setMessage('Invalid credentials');
+        }
+      } else {
+        setMessage('Network error, please check your connection.');
+      }
     }
   };
 
@@ -101,6 +109,7 @@ const Login = () => {
                   Login
                 </button>
               </form>
+              {message && <p className="error-message">{message}</p>}
             </div>
           )}
           {!showLogin && !loggedIn && (
