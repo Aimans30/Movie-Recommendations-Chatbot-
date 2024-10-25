@@ -151,3 +151,11 @@
   background-color: #34C759;
   color: white;
 }
+
+/* Thank You Message */
+.thank-you-message {
+  color: green;
+  text-align: center;
+  margin-top: 20px;
+  font-weight: bold;
+}

@@ -20,13 +20,17 @@ const authenticateToken = (req, res, next) => {
     });
 };
 
-// Signup route
+// Sign-up route
 router.post('/signup', async (req, res) => {
     const { username, email, password } = req.body;
-    
+
+    // Input validation
+    if (!username || !email || !password) {
+        return res.status(400).json({ message: 'All fields are required.' });
+    }
 
     try {
-        // Check if username already exists
+        // Check if username or email already exists
         const existingUser = await User.findOne({ $or: [{ username }, { email }] });
         if (existingUser) {
             if (existingUser.username === username) {
@@ -38,7 +42,7 @@ router.post('/signup', async (req, res) => {
         }
 
         // Hash the password before saving
-        const hashedPassword = await bcrypt.hash(password, 5);
+        const hashedPassword = await bcrypt.hash(password, 10); // Increased salt rounds for security
         const newUser = new User({ username, email, password: hashedPassword });
         await newUser.save();
 
@@ -50,27 +54,28 @@ router.post('/signup', async (req, res) => {
 });
 
 // Login route
-// Login route
 router.post('/login', async (req, res) => {
     const { email, password } = req.body;
-  
-    
+
+    // Input validation
+    if (!email || !password) {
+        return res.status(400).json({ message: 'All fields are required.' });
+    }
 
     try {
         const user = await User.findOne({ email });
-        
+
         if (!user) {
             return res.status(400).json({ message: 'Invalid email or password.' });
         }
 
         // Use bcrypt to compare the plain-text password with the hashed password
-        
         const isMatch = await bcrypt.compare(password, user.password);
-       
+
         if (!isMatch) {
             return res.status(400).json({ message: 'Invalid email or password.' });
         }
-        
+
         // Create a JWT token
         const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: '1h' });
         res.json({ token, username: user.username }); // Include username in the response
@@ -79,6 +84,5 @@ router.post('/login', async (req, res) => {
         res.status(500).json({ message: 'Server error. Please try again.' });
     }
 });
-
 
 module.exports = router;
