@@ -32,16 +32,16 @@ const Login = () => {
         }
       );
 
-      const { token, username } = response.data; // Ensure username is included in the response
+      const { token, username } = response.data;
       localStorage.setItem('token', token);
-      localStorage.setItem('username', username); // Store username in local storage
+      localStorage.setItem('username', username);
 
       setUsername(username);
       setLoggedIn(true);
       setMessage('You have been successfully logged in!');
       setShowSuccessModal(true);
 
-      setShowLogin(false); // Close login modal
+      setShowLogin(false);
 
       setTimeout(() => {
         setShowSuccessModal(false);
@@ -76,11 +76,15 @@ const Login = () => {
   return (
     <div className="login-container">
       {loggedIn ? (
-        <div className="welcome-message">
-          <span>Welcome, {username}!</span>
-          <button className="logout-button" onClick={handleLogout}>
-            Logout
-          </button>
+        <div className="welcome-logout-container">
+          <div className="welcome-message">
+            <span>Welcome, {username}!</span>
+          </div>
+          <div className="logout-button-container">
+            <button className="logout-button" onClick={handleLogout}>
+              Logout
+            </button>
+          </div>
         </div>
       ) : (
         <>

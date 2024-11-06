@@ -3,7 +3,7 @@ button {
     cursor: pointer;
 }
 
-/* Signup Button Styles */
+/* Signup and Login Button Styles */
 .signup-container {
     position: relative;
 }
@@ -19,7 +19,6 @@ button {
     border-radius: 6px;
     z-index: 1000;
     transition: background-color .15s;
-    margin-left: 30px;
 }
 
 .signup-button {
@@ -46,8 +45,8 @@ button {
     border-radius: 8px;
     padding: 30px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-    width: 400px;
-    max-width: 90%;
+    width: 90%;
+    max-width: 400px;
     z-index: 1000;
 }
 
@@ -83,13 +82,13 @@ button {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    background-color: lightblue; /* Login success modal color */
+    background-color: lightblue;
     border: 1px solid #ccc;
     border-radius: 8px;
     padding: 30px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-    width: 400px;
-    max-width: 90%;
+    width: 90%;
+    max-width: 400px;
     z-index: 1000;
     text-align: center;
 }
@@ -104,36 +103,39 @@ button {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    background-color: #007bff; /* Logout modal color */
+    background-color: #007bff;
     border: 1px solid #ccc;
     border-radius: 8px;
     padding: 30px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-    width: 400px;
-    max-width: 90%;
+    width: 90%;
+    max-width: 400px;
     z-index: 1000;
     text-align: center;
 }
 
 .logout-popup h2 {
-    color: #333; /* Optional: change text color */
+    color: #333;
 }
 
 /* Welcome Message and Logout Button */
-.welcome-message {
-    position: fixed;
-    top: 10px;
-    left: 110px;
+.welcome-logout-container {
     display: flex;
     align-items: center;
+    flex-wrap: wrap; /* Allow wrapping */
+    position: fixed;
+    top: 10px;
+    right: 20px;
+    z-index: 1000;
+    padding: 10px; /* Add padding to prevent overflow */
+    background-color: rgba(0, 0, 0, 0.6); /* Add background for visibility */
+    border-radius: 5px; /* Slightly round corners */
 }
 
-.welcome-message span {
+.welcome-message {
     margin-right: 10px;
-    font-weight: bold;
     color: whitesmoke;
-    margin-left: 150px;
-    margin-top: 16px;
+    font-size: 16px; /* Keep the size for visibility */
 }
 
 .logout-button {
@@ -142,7 +144,8 @@ button {
     color: white;
     border: none;
     border-radius: 5px;
-    margin-top: 10px;
+    cursor: pointer;
+    transition: background-color 0.2s;
 }
 
 .logout-button:hover {
@@ -184,13 +187,41 @@ button {
     left: 50%;
     transform: translate(-50%, -50%);
     background-color: white;
-    border: 1px solid #28a745; /* Green border */
+    border: 1px solid #28a745;
     border-radius: 8px;
     padding: 20px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    width: 90%;
+    max-width: 400px;
     z-index: 1000;
+    text-align: center;
 }
 
 .success-popup h2 {
-    color: #28a745; /* Green text color */
+    color: #28a745;
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+    .welcome-logout-container {
+     /* Stack items on small screens */
+        align-items: flex-start;
+        top: 10px;
+        right: 10px;
+        gap: 5px; /* Add some gap */
+    }
+
+    .welcome-message {
+        font-size: 14px; /* Keep the size small for mobile */
+        margin-right: 0; /* Reset margin */
+    }
+
+    .logout-button {
+        padding: 6px 10px; /* Smaller button */
+    }
+
+    .login-button{
+        margin-left: 230px;
+        margin-top: 2px;
+    }
 }

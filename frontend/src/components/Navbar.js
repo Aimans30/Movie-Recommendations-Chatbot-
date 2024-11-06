@@ -6,10 +6,7 @@ const Navbar = () => {
   return (
     <AppBar position="static" className="navbar">
       <Toolbar>
-        <Box className="auth-buttons">
-          {/* Add any auth buttons here if needed */}
-        </Box>
-        
+    
         <div className="navbar-title-container">
           <Typography variant="h6" className="navbar-title">
             Recommendo
