@@ -1,9 +1,32 @@
+/* Container for the chat interface */
+.chat-interface {
+  width: 400px;
+  height: auto;
+  max-height: 80vh;
+  overflow-y: auto;
+  background-color: white;
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  position: relative;
+  margin: 0 auto;
+}
+
+/* Scrollable message area */
+.scrollable-messages {
+  flex-grow: 1;
+  max-height: calc(100vh - 100px);
+  overflow-y: scroll;
+  padding-right: 10px;
+  padding-top: 10px;
+}
+
 /* General Message Styles */
 .message-container {
-  padding: 12px;
+  padding: 6px 10px;
   margin-bottom: 10px;
   border-radius: 20px;
-  max-width: 75%;
+  max-width: fit-content;
   font-size: 16px;
   line-height: 1.4;
   position: relative;
@@ -16,66 +39,75 @@
 }
 
 .message-user {
-  background-color: #34C759; /* iOS green for user messages */
+  background-color: #34C759;
   color: white;
   align-self: flex-end;
-  border-radius: 20px 20px 0 20px; /* Rounded corners like iOS */
+  border-radius: 20px 20px 0 20px;
+  margin-left: auto;
+  margin-right: 120px;
+  /* Min width for user message */
+  /* Max width to limit the message */
+  word-wrap: break-word;
+  margin-top: 15px;
+  padding: 8px 15px;
+  font-size: 14px; /* Slightly smaller font for user message */
 }
 
 .message-bot {
-  background-color: #007AFF; /* iOS blue for bot messages */
+  background-color: #007AFF;
   color: white;
   align-self: flex-start;
-  border-radius: 20px 20px 20px 0; /* Rounded corners like iOS */
+  border-radius: 20px 20px 20px 0;
+  margin-left: 100px;
+  max-width: 40%; /* Max width to limit the message */
+  padding: 8px 15px;
+  font-size: 14px; /* Smaller font size */
+  margin-top: 15px;
+  word-wrap: break-word;
 }
 
-.message-title {
-  font-weight: normal;
-  white-space: pre-wrap; /* Keep line breaks */
+/* Fixed Input Box Styles */
+.input-container {
+  display: flex;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background-color: white;
+  padding: 10px;
+  box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.3);
 }
 
-.scrollable-messages {
-  max-height: 60vh; /* Limit height of the messages area */
-  overflow-y: auto; /* Allow vertical scrolling */
-  padding-right: 10px;
+.input-container input {
+  flex-grow: 1;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 20px;
 }
 
-/* Custom Scrollbar Styles */
-::-webkit-scrollbar {
-  width: 20px; /* Width of the scrollbar */
+/* Send Button */
+.send-button {
+  background-color: #007AFF;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  margin-left: 10px;
+  border-radius: 20px; /* Rounded edges */
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  width: auto; /* Keep button auto-width */
 }
 
-::-webkit-scrollbar-track {
-  background-color: transparent; /* Transparent background for the track */
+.send-button:hover {
+  background-color: #005bb5;
 }
 
-::-webkit-scrollbar-thumb {
-  background-color: #d6dee1; /* Color of the scrollbar thumb */
-  border-radius: 20px; /* Rounded corners for the thumb */
-  border: 6px solid transparent; /* Space around the thumb */
-  background-clip: content-box; /* Ensures the border does not affect the thumb color */
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background-color: #a8bbbf; /* Color on hover */
-}
-
-/* Hide scrollbar for Firefox */
-.scrollable-messages {
-  scrollbar-width: thin; /* Thin scrollbar for Firefox */
-  scrollbar-color: #d6dee1 transparent; /* Thumb color and track color */
-}
-
-/* Hide scrollbar for IE and Edge */
-.scrollable-messages {
-  -ms-overflow-style: auto; /* Internet Explorer and Edge */
-}
-
+/* Loading Dots Animation */
 .loading-dots {
   display: flex;
   justify-content: flex-start;
   align-items: center;
-  margin-left: 10px;
+  margin-left: 105px;
 }
 
 .loading-dots span {
@@ -89,10 +121,10 @@
 
 @keyframes bounce {
   0%, 100% {
-      transform: translateY(0);
+    transform: translateY(0);
   }
   50% {
-      transform: translateY(-8px);
+    transform: translateY(-8px);
   }
 }
 
@@ -102,60 +134,85 @@
   justify-content: center;
   align-items: center;
   margin-top: 10px;
-  padding: 10px;
-  background-color: #f5f5f5;
-  border-radius: 10px;
-}
-
-.feedback-container .MuiIconButton-root {
-  margin: 0 10px;
-}
-
-.feedback-container .MuiButton-root {
-  padding: 8px;
-  font-size: 16px;
 }
 
 .rating-container {
-  margin-top: 20px;
-  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .rating-bubbles {
   display: flex;
-  justify-content: space-evenly;
-  margin-bottom: 10px;
+  margin: 10px 0;
 }
 
 .rating-bubble {
-  width: 40px;
-  height: 40px;
+  width: 30px;
+  height: 30px;
+  border: 1px solid #007AFF;
   border-radius: 50%;
-  font-size: 16px;
-  font-weight: bold;
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: #e0e0e0;
-  color: black;
-  transition: background-color 0.3s ease, color 0.3s ease;
-}
-
-.rating-bubble:hover {
-  background-color: #007AFF;
-  color: white;
+  margin: 0 5px;
   cursor: pointer;
+  transition: background-color 0.3s;
 }
 
 .rating-bubble.selected {
-  background-color: #34C759;
+  background-color: #007AFF;
   color: white;
 }
 
-/* Thank You Message */
-.thank-you-message {
-  color: green;
-  text-align: center;
-  margin-top: 20px;
-  font-weight: bold;
+/* Responsive Styles */
+@media (max-width: 600px) {
+  .chat-interface {
+    width: 100%;
+    padding: 10px;
+    max-height: 90vh;
+  }
+
+  .scrollable-messages {
+    padding-right: 5px;
+    max-height: calc(90vh - 100px);
+  }
+
+  .message-user {
+    margin-right: 10px;
+    max-width: 85%; /* Max width for mobile */
+  }
+
+  .message-bot {
+    margin-left: 10px;
+    max-width: 85%; /* Max width for mobile */
+  }
+
+  .input-container {
+    padding: 8px;
+    flex-direction: column; /* Stack elements vertically in mobile view */
+  }
+
+  .input-container input {
+    padding: 8px;
+  }
+
+  .send-button {
+    margin-left: 0;
+    width: auto;
+  }
+
+  .loading-dots {
+    margin-left: 10px;
+  }
+
+  .feedback-container {
+    margin-top: 8px;
+  }
+
+  .rating-bubble {
+    width: 24px;
+    height: 24px;
+    margin: 0 3px;
+  }
 }

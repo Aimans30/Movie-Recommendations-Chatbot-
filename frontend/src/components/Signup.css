@@ -1,66 +1,24 @@
-.signup-container {
-    position: relative;
+/* General Button Styles */
+button {
+    cursor: pointer;
 }
 
+/* Signup Button Styles */
 .signup-button {
-    position: fixed; 
-    top: 10px; 
-    left: 10px; 
     padding: 10px 15px;
-    background-color: #007bff;
+    background-image: radial-gradient(100% 100% at 100% 0, #5adaff 0, #5468ff 100%);
     color: white;
     border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    z-index: 1000; 
+    border-radius: 6px;
+    transition: background-color .15s;
 }
 
 .signup-button:hover {
     background-color: #0056b3;
 }
 
+/* Signup Popup Styles */
 .signup-popup {
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background-color: white;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    padding: 30px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-    width: 400px; 
-    max-width: 90%;
-    z-index: 1000; 
-}
-
-.signup-popup h2 {
-    margin-bottom: 20px;
-}
-
-.signup-popup input {
-    width: 100%;
-    padding: 10px;
-    margin: 10px 0;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-}
-
-.signup-popup .submit-button { /* New class for the submit button */
-    background-color: #007bff; /* Primary color */
-    color: white; 
-    border: none; 
-    border-radius: 5px; 
-    padding: 10px; 
-    cursor: pointer; 
-    width: 100%; /* Full width for better appearance */
-}
-
-.signup-popup .submit-button:hover { /* Hover effect for the submit button */
-    background-color: #0056b3; 
-}
-
-.success-popup {
     position: fixed;
     top: 50%;
     left: 50%;
@@ -75,26 +33,31 @@
     z-index: 1000;
 }
 
-.success-popup h2 {
+.signup-popup h2 {
     margin-bottom: 20px;
 }
 
-.success-popup button {
-    margin-top: 10px;
+.signup-popup input {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
 }
 
-.close-modal {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    background: transparent; 
-    border: none; 
-    font-size: 24px; 
-    color: #333; 
-    cursor: pointer; 
-    z-index: 1001; 
+.signup-popup .submit-button {
+    background-image: radial-gradient(100% 100% at 100% 0, #5adaff 0, #5468ff 100%);
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 10px;
+    cursor: pointer;
+    width: 100%;
 }
 
-.close-modal:hover {
-    color: #dc3545; 
+.signup-popup .submit-button:hover {
+    background-color: #0056b3;
 }
+
+/* Other modal styles can remain unchanged */
+

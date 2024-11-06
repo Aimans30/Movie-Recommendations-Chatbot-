@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Button, TextField, Container, Typography, Paper, Box, IconButton } from '@mui/material';
+import { Button, TextField, Typography, IconButton } from '@mui/material';
 import ThumbUpIcon from '@mui/icons-material/ThumbUp';
 import ThumbDownIcon from '@mui/icons-material/ThumbDown';
 import axios from 'axios';
@@ -14,18 +14,17 @@ const ChatInterface = () => {
   const [rating, setRating] = useState(null);
   const [feedbackText, setFeedbackText] = useState('');
   const [thankYouMessage, setThankYouMessage] = useState('');
-  const chatContainerRef = useRef(null); // Add a reference for the chat container
+  const chatContainerRef = useRef(null);
 
   useEffect(() => {
     const storedUsername = localStorage.getItem('username');
     if (storedUsername) {
       setUsername(storedUsername);
     } else {
-      setUsername('You'); // Fallback to 'You' if no username is stored
+      setUsername('You');
     }
   }, []);
 
-  // Auto-scroll to the bottom when messages change
   useEffect(() => {
     if (chatContainerRef.current) {
       chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
@@ -69,7 +68,6 @@ const ChatInterface = () => {
     console.log({ rating, feedbackText });
     setThankYouMessage('Thank you for your feedback!');
 
-    // Reset feedback state
     setFeedbackIndex(null);
     setRating(null);
     setFeedbackText('');
@@ -80,107 +78,116 @@ const ChatInterface = () => {
   };
 
   return (
-    <Container maxWidth="sm" style={{ marginTop: '20px', height: '80vh', display: 'flex', flexDirection: 'column' }}>
-      <Paper elevation={3} style={{ flex: 1, padding: '15px', overflowY: 'hidden' }}>
-        <div className="scrollable-messages" ref={chatContainerRef}> {/* Add the ref here */}
-          {messages.map((message, index) => (
-            <Box key={index} className={`message-container ${message.sender === 'User' ? 'message-user' : 'message-bot'}`}>
-              <Typography className="message-sender">
-                {message.sender === 'User' ? username : 'Recommendo'}
-              </Typography>
-              <Typography className="message-title">
-                {message.text}
-              </Typography>
+    <div style={{ display: 'flex', flexDirection: 'column', height: '80vh', padding: '0 10px' }}>
+      <div
+        ref={chatContainerRef}
+        style={{ flex: 1, padding: '10px', overflowY: 'auto', borderRadius: '8px' }}
+      >
+        {messages.map((message, index) => (
+          <div key={index} className={`message-container ${message.sender === 'User' ? 'message-user' : 'message-bot'}`}>
+            <Typography className="message-sender">
+              {message.sender === 'User' ? username : 'Recommendo'}
+            </Typography>
+            <Typography className="message-title">{message.text}</Typography>
 
-              {message.sender === 'Recommendo' && (
-                <>
-                  <div className="feedback-container">
-                    <IconButton onClick={() => handleFeedback(index)} aria-label="thumbs up">
-                      <ThumbUpIcon />
-                    </IconButton>
-                    <IconButton onClick={() => handleFeedback(index)} aria-label="thumbs down">
-                      <ThumbDownIcon />
-                    </IconButton>
-                  </div>
+            {message.sender === 'Recommendo' && (
+              <>
+                <div className="feedback-container">
+                  <IconButton onClick={() => handleFeedback(index)} aria-label="thumbs up">
+                    <ThumbUpIcon />
+                  </IconButton>
+                  <IconButton onClick={() => handleFeedback(index)} aria-label="thumbs down">
+                    <ThumbDownIcon />
+                  </IconButton>
+                </div>
 
-                  {feedbackIndex === index && (
-                    <div className="rating-container">
-                      <div className="rating-bubbles">
-                        {[1, 2, 3, 4, 5].map((num) => (
-                          <div
-                            key={num}
-                            className={`rating-bubble ${rating === num ? 'selected' : ''}`}
-                            onClick={() => handleRatingClick(num)}
-                          >
-                            {num}
-                          </div>
-                        ))}
-                      </div>
-                      <TextField
-                        fullWidth
-                        label="Additional Feedback"
-                        variant="outlined"
-                        value={feedbackText}
-                        onChange={(e) => setFeedbackText(e.target.value)}
-                        multiline
-                        rows={2}
-                        InputProps={{
-                          style: {
-                            borderRadius: '20px', // Rounded edges for the feedback textbox
-                          },
-                        }}
-                      />
-                      <Button
-                        variant="contained"
-                        color="primary"
-                        style={{ marginTop: '10px' }}
-                        onClick={handleSubmitFeedback}
-                      >
-                        Submit Feedback
-                      </Button>
+                {feedbackIndex === index && (
+                  <div className="rating-container">
+                    <div className="rating-bubbles">
+                      {[1, 2, 3, 4, 5].map((num) => (
+                        <div
+                          key={num}
+                          className={`rating-bubble ${rating === num ? 'selected' : ''}`}
+                          onClick={() => handleRatingClick(num)}
+                        >
+                          {num}
+                        </div>
+                      ))}
                     </div>
-                  )}
-                </>
-              )}
-            </Box>
-          ))}
+                    <TextField
+                      fullWidth
+                      label="Additional Feedback"
+                      variant="outlined"
+                      value={feedbackText}
+                      onChange={(e) => setFeedbackText(e.target.value)}
+                      multiline
+                      rows={2}
+                      InputProps={{
+                        style: {
+                          borderRadius: '20px',
+                        },
+                      }}
+                    />
+                    <Button
+                      variant="contained"
+                      color="primary"
+                      style={{ marginTop: '10px' }}
+                      onClick={handleSubmitFeedback}
+                    >
+                      Submit Feedback
+                    </Button>
+                  </div>
+                )}
+              </>
+            )}
+          </div>
+        ))}
 
-          {loading && (
-            <Box className="loading-dots">
-              <span></span>
-              <span></span>
-              <span></span>
-            </Box>
-          )}
-        </div>
-
-        {thankYouMessage && (
-          <Typography variant="body1" align="center" style={{ marginTop: '20px', color: 'green' }}>
-            {thankYouMessage}
-          </Typography>
+        {loading && (
+          <div className="loading-dots">
+            <span></span>
+            <span></span>
+            <span></span>
+          </div>
         )}
-      </Paper>
+      </div>
 
-      <TextField
-        fullWidth
-        label="Type your message"
-        value={query}
-        onChange={(e) => setQuery(e.target.value)}
-        variant="outlined"
-        margin="normal"
-        InputProps={{
-          style: {
-            borderRadius: '20px', // Rounded edges for the input textbox
-          },
-        }}
-        onKeyPress={(e) => {
-          if (e.key === 'Enter') handleSendMessage();
-        }}
-      />
-      <Button variant="contained" color="primary" fullWidth onClick={handleSendMessage}>
-        Send
-      </Button>
-    </Container>
+      {thankYouMessage && (
+        <Typography variant="body1" align="center" style={{ marginTop: '20px', color: 'green' }}>
+          {thankYouMessage}
+        </Typography>
+      )}
+
+      <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', marginTop: '5px' }}>
+        <TextField
+          value={query}
+          onChange={(e) => setQuery(e.target.value)}
+          variant="outlined"
+          margin="normal"
+          InputProps={{
+            style: {
+              borderRadius: '20px',
+              height: '40px',
+              width: '400px',
+              padding: '0 10px',
+              boxSizing: 'border-box',
+            },
+          }}
+          placeholder="Type your message here..."
+          onKeyPress={(e) => {
+            if (e.key === 'Enter') handleSendMessage();
+          }}
+        />
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={handleSendMessage}
+          className="send-button"
+        >
+          Send
+        </Button>
+      </div>
+    </div>
   );
 };
 
