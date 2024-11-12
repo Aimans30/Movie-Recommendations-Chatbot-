@@ -2,7 +2,7 @@ const express = require('express');
 const axios = require('axios');
 const router = express.Router();
 const dotenv = require('dotenv');
-const generateResponse = require('../responses'); // Import the response function
+const {generateResponse} = require('../responses'); // Import the response function
 
 // Load environment variables from .env file
 dotenv.config();
