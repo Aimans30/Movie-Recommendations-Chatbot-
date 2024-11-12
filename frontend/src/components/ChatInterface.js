@@ -88,7 +88,9 @@ const ChatInterface = () => {
             <Typography className="message-sender">
               {message.sender === 'User' ? username : 'Recommendo'}
             </Typography>
-            <Typography className="message-title">{message.text}</Typography>
+            <Typography className="message-title" style={{ whiteSpace: 'pre-line' }}>
+              {message.text}
+            </Typography>
 
             {message.sender === 'Recommendo' && (
               <>
