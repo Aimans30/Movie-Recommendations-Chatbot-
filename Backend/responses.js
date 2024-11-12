@@ -72,10 +72,46 @@ const generateResponse = async (query, axios) => {
             console.error("Error fetching movies:", error.response ? error.response.data : error.message);
             responseText = 'Sorry, I could not fetch the latest movies at this time. Please try again later.';
         }
+    } else if (normalizedQuery.includes('details about movie')) {
+        const movieName = normalizedQuery.replace('details about movie', '').trim();
+        if (movieName) {
+            try {
+                const movieDetailsUrl = `https://api.themoviedb.org/3/search/movie?api_key=${process.env.TMDB_API_KEY}&query=${encodeURIComponent(movieName)}`;
+                const movieDetailsData = await axios.get(movieDetailsUrl);
+
+                if (movieDetailsData.data.results.length > 0) {
+                    const movie = movieDetailsData.data.results[0]; // Assuming the first result is the correct movie
+                    const movieDescription = movie.overview || 'No description available.';
+                    const movieReleaseDate = movie.release_date || 'Release date not available.';
+                    const movieGenresList = (movie.genre_ids && movie.genre_ids.length > 0) 
+                        ? movie.genre_ids.map(id => movieGenres.find(genre => genre.id === id)?.name).join(', ') 
+                        : 'Not available';
+                    const movieRating = movie.vote_average ? `${movie.vote_average}/10` : 'Not rated';
+
+                    const movieCreditsUrl = `https://api.themoviedb.org/3/movie/${movie.id}/credits?api_key=${process.env.TMDB_API_KEY}`;
+                    const movieCreditsData = await axios.get(movieCreditsUrl);
+                    const castList = movieCreditsData.data.cast.slice(0, 5).map(cast => cast.name).join(', ') || 'Not available';
+
+                    responseText = `🎬 Movie: ${movie.title}
+⭐ Rating: ${movieRating}
+🗓️ Release Date: ${movieReleaseDate}
+🎬 Cast: ${castList}
+🎥 Genres: ${movieGenresList}
+📜 Description: ${movieDescription}
+                    `;
+                } else {
+                    responseText = `Sorry, I couldn't find any details about "${movieName}". Please try again.`;
+                }
+            } catch (error) {
+                console.error("Error fetching movie details:", error.response ? error.response.data : error.message);
+                responseText = 'Sorry, I could not fetch movie details at this time. Please try again later.';
+            }
+        } else {
+            responseText = 'Please provide the name of the movie you want details about.';
+        }
     } else if (normalizedQuery.includes('games') || normalizedQuery.includes('more games')) {
         try {
             let genreId = null;
-            // Check if the query mentions a specific genre
             for (const genre of gameGenres) {
                 if (normalizedQuery.includes(genre.name.toLowerCase())) {
                     genreId = genre.id;
@@ -97,8 +133,13 @@ const generateResponse = async (query, axios) => {
                 lastFetchedGames.push(...gamesToShow.map(game => game.name));
 
                 const gamesWithGenres = gamesToShow.map(game => {
-                    const gameGenresList = game.genres.map(genre => genre.name).join(', ') || 'Not available';
-                    const gamePlatformsList = game.platforms.map(platform => platform.platform.name).join(', ') || 'Not available'; // Get the platforms
+                    const gameGenresList = game.genres && game.genres.length > 0
+                        ? game.genres.map(genre => genre.name).join(', ') 
+                        : 'Not available'; 
+                    const gamePlatformsList = game.platforms && game.platforms.length > 0
+                        ? game.platforms.map(platform => platform.platform.name).join(', ') 
+                        : 'Not available'; 
+
                     return `🎮 ${game.name} - Rating: ${(game.rating).toFixed(2)}/5 | Genres: ${gameGenresList} | Platforms: ${gamePlatformsList}`;
                 });
 
@@ -109,10 +150,9 @@ const generateResponse = async (query, axios) => {
             console.error("Error fetching games:", error.response ? error.response.data : error.message);
             responseText = 'Sorry, I could not fetch the latest games at this time. Please try again later.';
         }
-    } else if (normalizedQuery.includes('shows') || normalizedQuery.includes('tv shows') || normalizedQuery.includes('web series')) {
+    } else if (normalizedQuery.includes('web series') || normalizedQuery.includes('more web series')) {
         try {
             let genreId = null;
-            // Check if the query mentions a specific genre
             for (const genre of showGenres) {
                 if (normalizedQuery.includes(genre.name.toLowerCase())) {
                     genreId = genre.id;
@@ -128,7 +168,7 @@ const generateResponse = async (query, axios) => {
             const shows = showData.data.results.filter(show => !lastFetchedShows.includes(show.name));
 
             if (shows.length === 0) {
-                responseText = 'No more new shows available. Here are the previous ones:\n' + lastFetchedShows.join('\n');
+                responseText = 'No more new web series available. Here are the previous ones:\n' + lastFetchedShows.join('\n');
             } else {
                 const showsToShow = shows.slice(0, 3);
                 lastFetchedShows.push(...showsToShow.map(show => show.name));
@@ -138,50 +178,18 @@ const generateResponse = async (query, axios) => {
                     return `📺 ${show.name} - Rating: ${show.vote_average}/10 | Genres: ${showGenresList}`;
                 });
 
-                responseText = `Here are the trending shows:\n${showsWithGenres.join('\n')}`;
+                responseText = `Here are the trending web series:\n${showsWithGenres.join('\n')}`;
             }
             showPage++;
         } catch (error) {
-            console.error("Error fetching shows:", error.response ? error.response.data : error.message);
-            responseText = 'Sorry, I could not fetch the latest shows at this time. Please try again later.';
-        }
-    } else if (normalizedQuery.includes('details about show')) {
-        // Extract the show name from the query (e.g., "Breaking Bad")
-        const showName = normalizedQuery.replace('details about show', '').trim();
-        if (showName) {
-            try {
-                const showDetailsUrl = `https://api.themoviedb.org/3/search/tv?api_key=${process.env.TMDB_API_KEY}&query=${encodeURIComponent(showName)}`;
-                const showDetailsData = await axios.get(showDetailsUrl);
-
-                if (showDetailsData.data.results.length > 0) {
-                    const show = showDetailsData.data.results[0]; // Assuming the first result is the correct show
-                    const showDescription = show.overview || 'No description available.';
-                    const showFirstAirDate = show.first_air_date || 'Air date not available.';
-                    const showGenresList = (show.genre_ids && show.genre_ids.length > 0) ? show.genre_ids.map(id => showGenres.find(genre => genre.id === id)?.name).join(', ') : 'Not available';
-                    const showRating = show.vote_average ? `${show.vote_average}/10` : 'Not rated';
-
-                    // Fetch the show’s credits (cast)
-                    const showCreditsUrl = `https://api.themoviedb.org/3/tv/${show.id}/credits?api_key=${process.env.TMDB_API_KEY}`;
-                    const showCreditsData = await axios.get(showCreditsUrl);
-                    const cast = (showCreditsData.data.cast && showCreditsData.data.cast.length > 0) ? showCreditsData.data.cast.slice(0, 3).map(actor => actor.name).join(', ') : 'Not available';
-
-                    responseText = `Here are the details for ${show.name}:\n\nDescription: ${showDescription}\nAir Date: ${showFirstAirDate}\nGenres: ${showGenresList}\nRating: ${showRating}\nCast: ${cast}`;
-                } else {
-                    responseText = `Sorry, I couldn't find any details for the show "${showName}". Please check the title and try again.`;
-                }
-            } catch (error) {
-                console.error("Error fetching show details:", error.response ? error.response.data : error.message);
-                responseText = 'Sorry, I could not fetch details for the requested show at this time. Please try again later.';
-            }
-        } else {
-            responseText = "Please provide a show name after 'details about show'. For example, 'details about show Breaking Bad'.";
+            console.error("Error fetching web series:", error.response ? error.response.data : error.message);
+            responseText = 'Sorry, I could not fetch the latest web series at this time. Please try again later.';
         }
     } else {
-        responseText = "I can help you with movies, shows, and games information! Just ask about trending movies, shows, or games.";
+        responseText = "Sorry, I didn't understand that. Could you clarify your request?";
     }
 
     return responseText;
 };
 
-// Export the function
-module.exports = generateResponse;
+module.exports = { generateResponse };
