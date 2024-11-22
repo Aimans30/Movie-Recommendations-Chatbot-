@@ -3,7 +3,7 @@ let lastFetchedGames = [];
 let lastFetchedShows = [];
 let moviePage = 1;
 let gamePage = 1;
-let showPage = 1;  // Track page for shows
+let showPage = 1;
 
 const generateResponse = async (query, axios) => {
     let responseText = '';
@@ -54,7 +54,7 @@ const generateResponse = async (query, axios) => {
             const movies = movieData.data.results.filter(movie => !lastFetchedMovies.includes(movie.title));
 
             if (movies.length === 0) {
-                responseText = 'No more new movies available. Here are the previous ones:\n' + lastFetchedMovies.join('\n');
+                responseText = `No more new movies available. Here are some previous ones you might like:\n${lastFetchedMovies.join('\n')}`;
             } else {
                 const moviesToShow = movies.slice(0, 3);
                 lastFetchedMovies.push(...moviesToShow.map(movie => movie.title));
@@ -64,7 +64,7 @@ const generateResponse = async (query, axios) => {
                     return `🎬 ${movie.title} - Rating: ${movie.vote_average}/10 | Genres: ${movieGenresList}`;
                 });
 
-                responseText = `Here are the trending movies:\n${moviesWithGenres.join('\n')}`;
+                responseText = `Here are some trending movies for you:\n${moviesWithGenres.join('\n')}`;
             }
             moviePage++;
         } catch (error) {
@@ -82,8 +82,8 @@ const generateResponse = async (query, axios) => {
                     const movie = movieDetailsData.data.results[0];
                     const movieDescription = movie.overview || 'No description available.';
                     const movieReleaseDate = movie.release_date || 'Release date not available.';
-                    const movieGenresList = (movie.genre_ids && movie.genre_ids.length > 0) 
-                        ? movie.genre_ids.map(id => movieGenres.find(genre => genre.id === id)?.name).join(', ') 
+                    const movieGenresList = (movie.genre_ids && movie.genre_ids.length > 0)
+                        ? movie.genre_ids.map(id => movieGenres.find(genre => genre.id === id)?.name).join(', ')
                         : 'Not available';
                     const movieRating = movie.vote_average ? `${movie.vote_average}/10` : 'Not rated';
 
@@ -96,8 +96,7 @@ const generateResponse = async (query, axios) => {
 🗓️ Release Date: ${movieReleaseDate}
 🎬 Cast: ${castList}
 🎥 Genres: ${movieGenresList}
-📜 Description: ${movieDescription}
-                    `;
+📜 Description: ${movieDescription}`;
                 } else {
                     responseText = `Sorry, I couldn't find any details about "${movieName}". Please try again.`;
                 }
@@ -119,25 +118,25 @@ const generateResponse = async (query, axios) => {
             }
 
             const gameUrl = genreId
-                ? `https://api.rawg.io/api/games?key=${process.env.RAWG_API_KEY}&genres=${genreId}&page=${gamePage}&page_size=3`
-                : `https://api.rawg.io/api/games?key=${process.env.RAWG_API_KEY}&page=${gamePage}&page_size=3`;
+                ? `https://api.rawg.io/api/games?key=${process.env.RAWG_API_KEY}&genres=${genreId}&page=${gamePage}`
+                : `https://api.rawg.io/api/games?key=${process.env.RAWG_API_KEY}&page=${gamePage}`;
 
             const gameData = await axios.get(gameUrl);
             const games = gameData.data.results.filter(game => !lastFetchedGames.includes(game.name));
 
             if (games.length === 0) {
-                responseText = 'No more new games available. Here are the previous ones:\n' + lastFetchedGames.join('\n');
+                responseText = `Looks like you've seen all the game suggestions I had. Let me refresh my list and get back to you!`;
             } else {
                 const gamesToShow = games.slice(0, 3);
                 lastFetchedGames.push(...gamesToShow.map(game => game.name));
 
                 const gamesWithGenres = gamesToShow.map(game => {
                     const gameGenresList = game.genres && game.genres.length > 0
-                        ? game.genres.map(genre => genre.name).join(', ') 
-                        : 'Not available'; 
+                        ? game.genres.map(genre => genre.name).join(', ')
+                        : 'Not available';
                     const gamePlatformsList = game.platforms && game.platforms.length > 0
-                        ? game.platforms.map(platform => platform.platform.name).join(', ') 
-                        : 'Not available'; 
+                        ? game.platforms.map(platform => platform.platform.name).join(', ')
+                        : 'Not available';
 
                     return `🎮 ${game.name} - Rating: ${(game.rating).toFixed(2)}/5 | Genres: ${gameGenresList} | Platforms: ${gamePlatformsList}`;
                 });
@@ -172,55 +171,20 @@ const generateResponse = async (query, axios) => {
 🗓️ Release Date: ${gameReleaseDate}
 🎮 Platforms: ${gamePlatformsList}
 🕹️ Genres: ${gameGenresList}
-📜 Description: ${gameDescription}
-                    `;
+📜 Description: ${gameDescription}`;
                 } else {
-                    responseText = `Sorry, I couldn't find any details about "${gameName}". Please try again.`;
+                    responseText = `Sorry, I couldn't find any details about "${gameName}".`;
                 }
             } catch (error) {
                 console.error("Error fetching game details:", error.response ? error.response.data : error.message);
-                responseText = 'Sorry, I could not fetch game details at this time. Please try again later.';
+                responseText = 'Error fetching game details. Try again later.';
             }
         } else {
             responseText = 'Please provide the name of the game you want details about.';
         }
-    } else if (normalizedQuery.includes('shows') || normalizedQuery.includes('more shows')) {
-        try {
-            let genreId = null;
-            for (const genre of showGenres) {
-                if (normalizedQuery.includes(genre.name.toLowerCase())) {
-                    genreId = genre.id;
-                    break;
-                }
-            }
-
-            const showUrl = genreId
-                ? `https://api.themoviedb.org/3/discover/tv?api_key=${process.env.TMDB_API_KEY}&with_genres=${genreId}&page=${showPage}`
-                : `https://api.themoviedb.org/3/trending/tv/day?api_key=${process.env.TMDB_API_KEY}&page=${showPage}`;
-
-            const showData = await axios.get(showUrl);
-            const shows = showData.data.results.filter(show => !lastFetchedShows.includes(show.name));
-
-            if (shows.length === 0) {
-                responseText = 'No more new shows available. Here are the previous ones:\n' + lastFetchedShows.join('\n');
-            } else {
-                const showsToShow = shows.slice(0, 3);
-                lastFetchedShows.push(...showsToShow.map(show => show.name));
-
-                const showsWithGenres = showsToShow.map(show => {
-                    const showGenresList = show.genre_ids.map(id => showGenres.find(genre => genre.id === id)?.name).join(', ') || 'Not available';
-                    return `📺 ${show.name} - Rating: ${show.vote_average}/10 | Genres: ${showGenresList}`;
-                });
-
-                responseText = `Here are the trending shows:\n${showsWithGenres.join('\n')}`;
-            }
-            showPage++;
-        } catch (error) {
-            console.error("Error fetching shows:", error.response ? error.response.data : error.message);
-            responseText = 'Sorry, I could not fetch the latest shows at this time. Please try again later.';
-        }
+    } else {
+        responseText = 'I’m here to assist with movies, games, and shows! What would you like to explore today?';
     }
-
     return responseText;
 };
 
