@@ -1,0 +1,148 @@
+/* General Button Styles */
+button {
+  cursor: pointer;
+}
+
+/* Wishlist Button */
+.wishlist-button {
+  position: fixed;
+  left: 200px; /* Adjust this value to move the button further left or right */
+  top: 8px; /* Adjust this value to move the button up or down */
+  padding: 10px 20px;
+  background-image: radial-gradient(100% 100% at 100% 0, #5adaff 0, #5468ff 100%);
+  color: white;
+  border: none;
+  border-radius: 6px;
+  z-index: 1000;
+  transition: background-color 0.15s;
+}
+.wishlist-button:hover {
+  background-color: #003366;
+}
+
+/* Popup Overlay */
+.wishlist-popup-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5); /* Dark overlay to focus on popup */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+/* Popup Modal */
+.wishlist-popup {
+  background-color: #f8f9fa;
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  width: 90%;
+  max-width: 500px;
+  color: #333; /* Dark text for contrast */
+  text-align: center;
+  z-index: 1001;
+}
+
+/* Modal Heading */
+.wishlist-popup h1 {
+  font-size: 24px;
+  color: #0056b3; /* Dark blue for heading */
+  margin-bottom: 20px;
+}
+
+/* Form Styles */
+.wishlist-form {
+  display: flex;
+  flex-direction: column;
+}
+
+.wishlist-form label {
+  margin-bottom: 10px;
+  font-size: 16px;
+  color: #333;
+}
+
+.wishlist-form input,
+.wishlist-form textarea {
+  padding: 10px;
+  margin: 8px 0;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  font-size: 16px;
+}
+
+.wishlist-form input[type="text"],
+.wishlist-form textarea {
+  width: 100%;
+}
+
+.wishlist-form textarea {
+  min-height: 100px;
+}
+
+/* Checkbox Container */
+.checkbox-container {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.checkbox-container label {
+  font-size: 16px;
+  color: #333;
+}
+
+/* Buttons */
+.submit-button,
+.close-button {
+  padding: 12px 20px;
+  border-radius: 6px;
+  border: none;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.submit-button {
+  background-color: #5adaff;
+  color: white;
+}
+
+.submit-button:hover {
+  background-color: #007bff;
+}
+
+.close-button {
+  background-color: #f44336;
+  color: white;
+  margin-top: 10px;
+}
+
+.close-button:hover {
+  background-color: #d32f2f;
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 768px) {
+  .wishlist-popup {
+    width: 90%;
+    padding: 15px;
+  }
+
+  .wishlist-form label {
+    font-size: 14px;
+  }
+
+  .wishlist-form input,
+  .wishlist-form textarea {
+    font-size: 14px;
+  }
+
+  .wishlist-popup h1 {
+    font-size: 20px;
+  }
+}
