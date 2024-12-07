@@ -25,7 +25,7 @@ const WishList = () => {
   useEffect(() => {
     const fetchWishlist = async () => {
       try {
-        const response = await axios.get('http://localhost:5000/api/wishlist/', {
+        const response = await axios.get('https://recommendo.onrender.com/api/wishlist/', {
           headers: { 'Content-Type': 'application/json' },
         });
         setWishlistItems(response.data.items);
@@ -47,7 +47,7 @@ const WishList = () => {
 
     try {
       // Post the new item to the server
-      const response = await axios.post('http://localhost:5000/api/wishlist/add', itemData, {
+      const response = await axios.post('https://recommendo.onrender.com/api/wishlist/add', itemData, {
         headers: { 'Content-Type': 'application/json' },
       });
 
@@ -65,7 +65,7 @@ const WishList = () => {
 
   const handleDeleteItem = async (itemId, type, title) => {
     try {
-      await axios.delete('http://localhost:5000/api/wishlist/remove', {
+      await axios.delete('https://recommendo.onrender.com/api/wishlist/remove', {
         headers: { 'Content-Type': 'application/json' },
         data: { type, title },
       });
