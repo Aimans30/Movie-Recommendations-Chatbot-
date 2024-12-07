@@ -1,19 +1,9 @@
-import React, { useState } from 'react';
-import { AppBar, Toolbar, Typography, Button, Box } from '@mui/material';
-import Wishlist from './WishList.js';
+import React from 'react';
+import { AppBar, Toolbar, Typography } from '@mui/material';
+import WishList from './WishList'; // Import the wishlist button
 import './Navbar.css';
 
 const Navbar = () => {
-  const [isWishlistOpen, setIsWishlistOpen] = useState(false);
-
-  const handleWishlistOpen = () => {
-    setIsWishlistOpen(true);
-  };
-
-  const handleWishlistClose = () => {
-    setIsWishlistOpen(false);
-  };
-
   return (
     <AppBar position="static" className="navbar">
       <Toolbar>
@@ -22,20 +12,9 @@ const Navbar = () => {
             Recommendo
           </Typography>
         </div>
-
-        <Box>
-          <Button
-            variant="contained"
-            className="wishlist-button"
-            onClick={handleWishlistOpen}
-          >
-            Wishlist
-          </Button>
-        </Box>
+        {/* Render the Wishlist button */}
+        <WishList />
       </Toolbar>
-
-      {/* Wishlist Popup */}
-      {isWishlistOpen && <Wishlist onClose={handleWishlistClose} />}
     </AppBar>
   );
 };

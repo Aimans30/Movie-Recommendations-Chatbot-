@@ -166,26 +166,67 @@ const generateResponse = async (query, axios) => {
                     const gamePlatformsList = gameDetailsData.data.platforms.map(platform => platform.platform.name).join(', ') || 'Not available';
                     const gameRating = gameDetailsData.data.rating ? `${gameDetailsData.data.rating}/5` : 'Not rated';
 
+                    // Review breakdown
+                    const reviewBreakdown = gameDetailsData.data.ratings
+                        ? gameDetailsData.data.ratings.map(rating => `${rating.title}: ${rating.percent}%`).join(' | ')
+                        : 'No review breakdown available.';
+
                     responseText = `🎮 Game: ${game.name}
 ⭐ Rating: ${gameRating}
 🗓️ Release Date: ${gameReleaseDate}
+🎮 Genres: ${gameGenresList}
 🎮 Platforms: ${gamePlatformsList}
-🕹️ Genres: ${gameGenresList}
-📜 Description: ${gameDescription}`;
+📜 Description: ${gameDescription}
+📊 Reviews: ${reviewBreakdown}`;
                 } else {
-                    responseText = `Sorry, I couldn't find any details about "${gameName}".`;
+                    responseText = `Sorry, I couldn't find any details about "${gameName}". Please try again.`;
                 }
             } catch (error) {
                 console.error("Error fetching game details:", error.response ? error.response.data : error.message);
-                responseText = 'Error fetching game details. Try again later.';
+                responseText = 'Sorry, I could not fetch game details at this time. Please try again later.';
             }
         } else {
             responseText = 'Please provide the name of the game you want details about.';
         }
-    } else {
-        responseText = 'I’m here to assist with movies, games, and shows! What would you like to explore today?';
+    } else if (normalizedQuery.includes('shows') || normalizedQuery.includes('more shows')) {
+        try {
+            let genreId = null;
+            for (const genre of showGenres) {
+                if (normalizedQuery.includes(genre.name.toLowerCase())) {
+                    genreId = genre.id;
+                    break;
+                }
+            }
+
+            const showUrl = genreId
+                ? `https://api.themoviedb.org/3/discover/tv?api_key=${process.env.TMDB_API_KEY}&with_genres=${genreId}&page=${showPage}`
+                : `https://api.themoviedb.org/3/trending/tv/day?api_key=${process.env.TMDB_API_KEY}&page=${showPage}`;
+
+            const showData = await axios.get(showUrl);
+            const shows = showData.data.results.filter(show => !lastFetchedShows.includes(show.name));
+
+            if (shows.length === 0) {
+                responseText = `Looks like you've already seen all the shows I have. Let me fetch some new suggestions for you!`;
+            } else {
+                const showsToShow = shows.slice(0, 3);
+                lastFetchedShows.push(...showsToShow.map(show => show.name));
+
+                const showsWithGenres = showsToShow.map(show => {
+                    const showGenresList = show.genre_ids.map(id => showGenres.find(genre => genre.id === id)?.name).join(', ') || 'Not available';
+                    return `📺 ${show.name} - Rating: ${show.vote_average}/10 | Genres: ${showGenresList}`;
+                });
+
+                responseText = `Here are some trending shows for you:\n${showsWithGenres.join('\n')}`;
+            }
+            showPage++;
+        } catch (error) {
+            console.error("Error fetching shows:", error.response ? error.response.data : error.message);
+            responseText = 'Sorry, I could not fetch the latest shows at this time. Please try again later.';
+        }
     }
+
     return responseText;
 };
+
 
 module.exports = { generateResponse };

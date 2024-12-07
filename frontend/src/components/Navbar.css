@@ -1,3 +1,4 @@
+/* General Styling */
 body {
   margin: 0;
   padding: 0;
@@ -5,30 +6,22 @@ body {
 
 .navbar {
   background-color: #3f51b5;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+  padding: 0 20px;
   display: flex;
-  justify-content: space-between;
   align-items: center;
   height: 80px;
-  padding: 0 20px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
 }
 
-.welcome-message {
-  color: #fff;
-  margin-right: 10px;
-}
-
-.logout-button {
-  background-color: #f44336;
-  color: white;
-  border: none;
-  padding: 8px 12px;
-  cursor: pointer;
-  margin-left: 10px;
+.navbar-container {
+  display: flex;
+  justify-content: space-between; /* Space between items */
+  align-items: center; /* Center items vertically */
+  width: 100%; /* Ensure it takes full width */
 }
 
 .navbar-title-container {
-  flex-grow: 1;
+  flex-grow: 1; /* Center aligns the title */
   text-align: center;
 }
 
@@ -39,35 +32,4 @@ body {
   text-transform: uppercase;
   letter-spacing: 2px;
   text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
-  padding-top: 15px;
-  line-height: 1.2;
-}
-
-@media (max-width: 600px) {
-  .navbar {
-    flex-direction: column;
-    align-items: center;
-    height: auto;
-    padding: 10px 15px;
-    position: relative; /* Allow absolute positioning inside navbar */
-  }
-
-  .navbar-title {
-    font-size: 24px;
-    padding-top: 5px;
-    margin-bottom: 5px;
-  }
-
-  .welcome-message {
-    position: absolute;
-    top: -5px; /* Adjust the vertical positioning */
-    margin-left: 160px; /* Position it slightly from the right edge */
-    font-size: 14px;
-  }
-
-  .logout-button {
-    padding: 6px 10px;
-    margin-top: 5px;
-    margin-right: 20px;
-  }
 }

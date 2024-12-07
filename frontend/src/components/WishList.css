@@ -1,23 +1,28 @@
 /* General Button Styles */
-button {
-  cursor: pointer;
-}
 
 /* Wishlist Button */
 .wishlist-button {
-  position: fixed;
-  left: 200px; /* Adjust this value to move the button further left or right */
-  top: 8px; /* Adjust this value to move the button up or down */
-  padding: 10px 20px;
-  background-image: radial-gradient(100% 100% at 100% 0, #5adaff 0, #5468ff 100%);
+  background-color: #007bff; /* Blue */
   color: white;
-  border: none;
+  padding: 10px 20px;
   border-radius: 6px;
-  z-index: 1000;
-  transition: background-color 0.15s;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
 }
+
+/* For any button */
+button {
+  cursor: pointer;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 6px;
+  font-size: 16px;
+  transition: background-color 0.3s ease;
+}
+
 .wishlist-button:hover {
-  background-color: #003366;
+  background-color: #0056b3; /* Darker blue for hover */
 }
 
 /* Popup Overlay */
@@ -27,30 +32,36 @@ button {
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0, 0, 0, 0.5); /* Dark overlay to focus on popup */
-  display: flex;
+  background: rgba(0, 0, 0, 0.6); /* Dark overlay */
+  display: none;
   justify-content: center;
   align-items: center;
   z-index: 1000;
 }
 
+/* Show overlay when modal is active */
+.wishlist-popup-overlay.show {
+  display: flex; /* Makes the overlay and popup appear */
+}
+
 /* Popup Modal */
 .wishlist-popup {
-  background-color: #f8f9fa;
+  background-color: #ffffff;
   border-radius: 8px;
   padding: 20px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
   width: 90%;
-  max-width: 500px;
-  color: #333; /* Dark text for contrast */
+  max-width: 500px; /* Max width for the popup */
   text-align: center;
-  z-index: 1001;
+  animation: fadeIn 0.3s ease-in-out;
+  overflow: auto; /* Prevent overflow */
+  max-height: 80vh; /* Ensure it doesn't grow too tall */
 }
 
 /* Modal Heading */
 .wishlist-popup h1 {
   font-size: 24px;
-  color: #0056b3; /* Dark blue for heading */
+  color: #0056b3;
   margin-bottom: 20px;
 }
 
@@ -58,42 +69,33 @@ button {
 .wishlist-form {
   display: flex;
   flex-direction: column;
+  gap: 20px;
+  justify-content: space-between;
+  height: auto;
+  max-height: 60vh; /* Max height for form */
+  overflow-y: auto; /* Enable scrolling within the form if needed */
 }
 
+/* Ensure labels and input fields are well-aligned */
 .wishlist-form label {
-  margin-bottom: 10px;
   font-size: 16px;
   color: #333;
+  text-align: left;
 }
 
 .wishlist-form input,
 .wishlist-form textarea {
-  padding: 10px;
-  margin: 8px 0;
+  width: 100%;
+  padding: 12px;
   border-radius: 6px;
   border: 1px solid #ccc;
   font-size: 16px;
-}
-
-.wishlist-form input[type="text"],
-.wishlist-form textarea {
-  width: 100%;
+  box-sizing: border-box; /* Prevent input overflow */
 }
 
 .wishlist-form textarea {
-  min-height: 100px;
-}
-
-/* Checkbox Container */
-.checkbox-container {
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 20px;
-}
-
-.checkbox-container label {
-  font-size: 16px;
-  color: #333;
+  min-height: 60px;
+  resize: vertical; /* Allow vertical resizing if needed */
 }
 
 /* Buttons */
@@ -101,19 +103,18 @@ button {
 .close-button {
   padding: 12px 20px;
   border-radius: 6px;
-  border: none;
   font-size: 16px;
   cursor: pointer;
-  transition: background-color 0.3s;
+  transition: background-color 0.3s ease;
 }
 
 .submit-button {
-  background-color: #5adaff;
+  background-color: #007bff; /* Blue */
   color: white;
 }
 
 .submit-button:hover {
-  background-color: #007bff;
+  background-color: #0056b3; /* Darker blue */
 }
 
 .close-button {
@@ -133,6 +134,10 @@ button {
     padding: 15px;
   }
 
+  .wishlist-popup h1 {
+    font-size: 20px;
+  }
+
   .wishlist-form label {
     font-size: 14px;
   }
@@ -142,7 +147,72 @@ button {
     font-size: 14px;
   }
 
-  .wishlist-popup h1 {
-    font-size: 20px;
+  /* Mobile Wishlist Button Styling */
+  .open-wishlist-button {
+    position: fixed; /* Fix button to the bottom */
+    bottom: 20px; /* Space from the bottom */
+    right: 20px; /* Space from the right edge */
+    width: auto; /* Let the width adjust to content */
+    font-size: 18px; /* Increase font size on mobile for better visibility */
+    padding: 12px 24px; /* Adjust padding */
+    background-color: #007bff; /* Blue */
+    color: white;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
   }
+
+  .open-wishlist-button:hover {
+    background-color: #0056b3; /* Darker blue for hover */
+  }
+}
+
+/* Modal Fade In Animation */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Wishlist View Styles */
+.wishlist-view {
+  margin-top: 20px;
+  text-align: left;
+}
+
+.wishlist-view ul {
+  list-style-type: none;
+  padding-left: 0;
+}
+
+.wishlist-view li {
+  background-color: #f8f9fa;
+  padding: 12px;
+  border-radius: 6px;
+  margin-bottom: 10px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  color: black; /* Set text color to black */
+}
+
+.wishlist-view li span {
+  font-weight: bold;
+}
+
+.delete-button {
+  background-color: #ff4d4d;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  cursor: pointer;
+  margin-left: 10px;
+  border-radius: 5px;
+}
+
+.delete-button:hover {
+  background-color: #e60000;
 }
