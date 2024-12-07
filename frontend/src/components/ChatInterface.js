@@ -42,7 +42,7 @@ const ChatInterface = () => {
     try {
       const res = await new Promise((resolve) =>
         setTimeout(async () => {
-          const apiRes = await axios.post('http://localhost:5000/api/chatbot/query', { query });
+          const apiRes = await axios.post('https://recommendo.onrender.com/api/chatbot/query', { query });
           resolve(apiRes);
         }, 2000)
       );
