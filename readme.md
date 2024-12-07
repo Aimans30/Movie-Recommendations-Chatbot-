@@ -1,6 +1,6 @@
-# Movie, Games, and Shows Recommendation Chatbot
+# Recommendo- Movie, Games, and Shows Recommendation Chatbot
 
-Welcome to the Movie, Games, and Shows Recommendation Chatbot! This chatbot is designed to provide personalized movie and game recommendations, as well as let users manage their wishlist for movies and games they want to watch or play.
+Welcome to Recommendo! This chatbot is designed to provide personalized movie and game recommendations, as well as let users manage their wishlist for movies and games they want to watch or play.
 
 ## Features
 
