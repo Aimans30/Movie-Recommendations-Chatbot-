@@ -147,23 +147,34 @@ button {
     font-size: 14px;
   }
 
-  /* Mobile Wishlist Button Styling */
+  /* Improved mobile wishlist button styling */
   .open-wishlist-button {
-    position: fixed; /* Fix button to the bottom */
+    position: fixed; /* Fix button to the bottom of the screen */
     bottom: 20px; /* Space from the bottom */
     right: 20px; /* Space from the right edge */
-    width: auto; /* Let the width adjust to content */
-    font-size: 18px; /* Increase font size on mobile for better visibility */
-    padding: 12px 24px; /* Adjust padding */
+    font-size: 18px; /* Slightly larger font size for better readability */
+    padding: 12px 24px; /* Adjust padding for better touch area */
     background-color: #007bff; /* Blue */
     color: white;
     border-radius: 6px;
     cursor: pointer;
     transition: background-color 0.3s ease;
+    z-index: 99999; /* Higher z-index to ensure it's above other content */
+    display: block; /* Ensure button is visible */
   }
 
   .open-wishlist-button:hover {
     background-color: #0056b3; /* Darker blue for hover */
+  }
+
+  /* Adjust wishlist view for mobile */
+  .wishlist-view ul {
+    padding-left: 0;
+  }
+
+  .wishlist-view li {
+    padding: 10px;
+    font-size: 14px; /* Smaller font size on mobile */
   }
 }
 
@@ -215,4 +226,40 @@ button {
 
 .delete-button:hover {
   background-color: #e60000;
+}
+
+/* Updated Wishlist Button Styling */
+.open-wishlist-button {
+  background-color: #007bff; /* Blue */
+  color: white;
+  padding: 10px 20px;
+  border-radius: 6px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  position: absolute; /* Position it relative to the navbar */
+  bottom: 6px; /* Push it to the bottom */
+  right: 350px; /* Align to the left */
+}
+
+.open-wishlist-button:hover {
+  background-color: #0056b3; /* Darker blue for hover */
+}
+.notification {
+  background-color: #4caf50; /* Green for success */
+  color: white;
+  padding: 10px;
+  margin-bottom: 15px;
+  border-radius: 5px;
+}
+
+.notification.error {
+  background-color: #f44336; /* Red for errors */
+}
+.search-input {
+  width: 100%;
+  padding: 8px;
+  margin-bottom: 15px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
 }

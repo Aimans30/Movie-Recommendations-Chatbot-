@@ -7,6 +7,7 @@ const WishList = () => {
   const [wishlistItems, setWishlistItems] = useState([]);
   const [showAddForm, setShowAddForm] = useState(false);
   const [newItem, setNewItem] = useState({ title: '', details: '', type: '' });
+  const [searchQuery, setSearchQuery] = useState(''); // State for search query
 
   const handleOpenModal = () => {
     const username = localStorage.getItem('username');
@@ -45,15 +46,18 @@ const WishList = () => {
     };
 
     try {
-      await axios.post('http://localhost:5000/api/wishlist/add', itemData, {
+      // Post the new item to the server
+      const response = await axios.post('http://localhost:5000/api/wishlist/add', itemData, {
         headers: { 'Content-Type': 'application/json' },
       });
+
+      // Clear the input fields and hide the form
       setNewItem({ title: '', details: '', type: '' });
       setShowAddForm(false);
-      const response = await axios.get('http://localhost:5000/api/wishlist/', {
-        headers: { 'Content-Type': 'application/json' },
-      });
-      setWishlistItems(response.data.items);
+
+      // Optimistically update the wishlist (adding the new item to the state)
+      setWishlistItems((prevItems) => [...prevItems, response.data.item]);
+
     } catch (error) {
       console.error('Error adding item:', error.response ? error.response.data : error.message);
     }
@@ -70,6 +74,12 @@ const WishList = () => {
       console.error('Error deleting item:', error.response ? error.response.data : error.message);
     }
   };
+
+  // Filter wishlist items based on search query
+  const filteredItems = wishlistItems.filter((item) =>
+    item.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    (item.details && item.details.toLowerCase().includes(searchQuery.toLowerCase()))
+  );
 
   return (
     <>
@@ -117,8 +127,16 @@ const WishList = () => {
               </form>
             ) : (
               <div className="wishlist-view">
+                {/* Search Bar */}
+                <input
+                  type="text"
+                  placeholder="Search items..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  className="search-input"
+                />
                 <ul>
-                  {wishlistItems.map((item) => (
+                  {filteredItems.map((item) => (
                     <li key={item._id}>
                       <span>{item.type.toUpperCase()}:</span> {item.title}
                       {item.details && ` - ${item.details}`}
